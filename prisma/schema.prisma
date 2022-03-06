@@ -29,8 +29,8 @@ model local {
   cod_localidad   Int
   codLocalidad    localidad @relation(fields: [cod_localidad], references: [cod_localidad])
   direccion_local String
-  latitud_local   Decimal
-  longitud_local  Decimal
+  latitud_local   Decimal?
+  longitud_local  Decimal?
 
   fotos fotos[]
 }

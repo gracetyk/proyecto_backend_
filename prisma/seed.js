@@ -1,6 +1,6 @@
 import Prisma from "@prisma/client";
 import adminSeed from "./seeds/admin.seed.js";
-import publicacionSeed from "./seeds/publicacion.seed.js";
+// import publicacionSeed from "./seeds/publicacion.seed.js";
 
 const { PrismaClient } = Prisma;
 
@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   await Promise.all([adminSeed(prisma)]);
-  await Promise.all([publicacionSeed(prisma)]);
+  // await Promise.all([publicacionSeed(prisma)]);
 }
 
 main()

@@ -3,6 +3,7 @@ import { archivoDto } from "../services/dtos/request/archivo.dto.js";
 
 export async function crearArchivo(req, res) {
   try {
+
     const data = archivoDto(req.body);
 
     const url = await ArchivosService.crearArchivo(data);
@@ -13,4 +14,4 @@ export async function crearArchivo(req, res) {
       message: error.message,
     });
   }
-}
+};

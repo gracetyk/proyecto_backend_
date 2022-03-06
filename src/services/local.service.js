@@ -9,6 +9,7 @@ export class localService {
       });
 
       return { content: nuevoLocal };
+      
     } catch (error) {
       console.log(error);
       if (error instanceof Prisma.Prisma.PrismaClientValidationError) {
