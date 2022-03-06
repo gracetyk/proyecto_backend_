@@ -2,7 +2,8 @@ import express, { json } from "express";
 import morgan from "morgan";
 import { authRouter } from "./routes/auth.routes.js";
 import { localRouter } from "./routes/local.routes.js";
-import { listaRouter } from "./routes/listar.routes.js"
+import { listaRouter } from "./routes/listar.routes.js";
+import { elimRouter } from "./routes/elimina.routes.js";
 import { archivoRouter } from "./routes/archivo.routes.js";
 
 
@@ -15,6 +16,7 @@ app.use(json());
 app.use(authRouter);
 app.use(localRouter);
 app.use(listaRouter);
+app.use(elimRouter);
 app.use(archivoRouter);
 // fin de la definicion
 

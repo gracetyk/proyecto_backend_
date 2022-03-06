@@ -14,6 +14,7 @@ export async function crear(req, res) {
       message: error.message,
     });
   }
+
 }
 
 export async function listar(req, res) {
@@ -22,6 +23,20 @@ export async function listar(req, res) {
 
     //const data = req.body;
     const resultado = await localService.listarLocal();
+
+    return res.status(201).json(resultado);
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+}
+
+export async function elimina(req, res) {
+
+  try {
+    const { id } = req.params
+    const resultado = await localService.EliminaLocal(id);
 
     return res.status(201).json(resultado);
   } catch (error) {

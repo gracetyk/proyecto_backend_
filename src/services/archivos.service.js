@@ -3,7 +3,7 @@ import { s3 } from "../s3.js";
 export class ArchivosService {
   // data = { productoId: 1, contentType: 'image/png', ext:'png', filename: 'mayonesa.png' }
   static async crearArchivo(data) {
-    const path = `archivos/productos/${data.id}`;
+    const path = `archivos/imagenes/${data.id}`;
 
     const url = s3.getSignedUrl("putObject", {
       Key: `${path}/${data.filename}.${data.ext}`,
