@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model categoria {
+  categoria_id Int     @id @unique @default(autoincrement())
+  nom_categ    String
+  desc_categ   String
+  local        local[]
+}
+
+model local {
+
+  local_id        Int       @id @unique @default(autoincrement())
+  titulo_local    String
+  descrip_local   String
+  precio_alquiler Decimal
+  area_local      Decimal
+  categoria_id    Int
+  categoriaId     categoria @relation(fields: [categoria_id], references: [categoria_id])
+  cod_localidad   Int
+  codLocalidad    localidad @relation(fields: [cod_localidad], references: [cod_localidad])
+  direccion_local String
+  latitud_local   Decimal
+  longitud_local  Decimal
+
+  fotos fotos[]
+}
+
+model pais {
+  cod_pais Int      @id @unique @default(autoincrement())
+  nom_pais String
+  ciudad   ciudad[]
+}
+
+model localidad {
+  cod_localidad Int     @id @unique @default(autoincrement())
+  nom_localidad String
+  cod_ciudad    Int
+  codCiudad     ciudad  @relation(fields: [cod_ciudad], references: [cod_ciudad])
+  local         local[]
+}
+
+model ciudad {
+  cod_ciudad Int         @id @unique @default(autoincrement())
+  nom_ciudad String
+  cod_pais   Int
+  codPais    pais        @relation(fields: [cod_pais], references: [cod_pais])
+  localidad  localidad[]
+}
+
+model fotos {
+  fotos_id Int    @id @unique @default(autoincrement())
+  foto_url String
+  local_id Int
+  localId  local  @relation(fields: [local_id], references: [local_id])
+}
+
+model Usuario {
+  id          Int         @id @unique @default(autoincrement())
+  nombre      String
+  correo      String      @unique
+  password    String
+  tipoUsuario TipoUsuario @map(name: "tipo_usuario")
+
+  @@map(name: "usuarios")
+}
+
+enum TipoUsuario {
+  ADMIN
+  CLIENTE
+  SUPERADMIN
+}
