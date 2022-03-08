@@ -1,6 +1,8 @@
 import { prisma } from "../prisma.js";
 import { compareSync } from "bcrypt";
 import jwt from "jsonwebtoken";
+import { hashSync } from "bcrypt";
+import Prisma from "@prisma/client";
 
 export class AuthService {
   static async login({ correo, password }) {
@@ -8,7 +10,7 @@ export class AuthService {
     // si no lo encuentra lanzara un error de not found
     const usuarioEncontrado = await prisma.usuario.findUnique({
       where: { correo },
-      select: { password: true, tipoUsuario: true, id: true },
+      select: { password: true, nombre: true, id: true },
       rejectOnNotFound: true,
     });
 
@@ -22,9 +24,58 @@ export class AuthService {
         { expiresIn: "4h" }
       );
 
-      return { message: "Si es el usuario", token };
+      return { message: `Bienvenido ${usuarioEncontrado.nombre}`, token };
     } else {
       return { message: "Credenciales incorrectas" };
     }
   }
-}
+
+  static async crearUsuario (data) {
+
+    try {
+      const correo = data.correo;
+      const password = hashSync(data.password, 10);
+      const nombre = data.nombre;
+
+      const correoExiste = await prisma.usuario.findUnique({
+        where: {correo},
+        select: {correo:true},
+      })
+      
+      if (correoExiste === null){
+
+      const usuarioCreado =await prisma.usuario.create({
+        data: {
+          nombre,
+          correo,
+          password,
+        }
+      })
+      
+      const token = jwt.sign(
+        {
+          id: usuarioCreado.id,
+          nombre: usuarioCreado.nombre,
+          apellido: usuarioCreado.apellido,
+        },
+        process.env.SECRET_JWT,
+        {
+          expiresIn: "5h",
+        },
+      );
+      return {
+        message: "Usuario Creado Exitosamente",
+        token: token,
+      }
+    } else {
+      return "No se pudo crear cuenta, este correo ya se registro anteriormente";
+    }
+    } catch (error) {
+      console.log(error)
+      if (error instanceof Prisma.Prisma.PrismaClientValidationError){return {
+        message: "Error en la validacion de prisma",
+        conntent: error.message,
+      }}
+    };
+  };
+};

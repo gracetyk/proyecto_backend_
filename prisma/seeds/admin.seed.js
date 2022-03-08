@@ -8,7 +8,6 @@ export default async (prisma) => {
       nombre: "Graciela",
       correo: "gnsalcedo@gmail.com",
       password,
-      tipoUsuario: "ADMIN",
     },
     update: {
       password,
