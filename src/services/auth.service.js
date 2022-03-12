@@ -13,7 +13,6 @@ export class AuthService {
       select: { password: true, nombre: true, id: true },
       rejectOnNotFound: true,
     });
-
     const resultado = compareSync(password, usuarioEncontrado.password);
 
     if (resultado) {
@@ -39,7 +38,7 @@ export class AuthService {
 
       const correoExiste = await prisma.usuario.findUnique({
         where: {correo},
-        select: {correo:true},
+        select: {correo:true, nombre:true},
       })
       
       if (correoExiste === null){
@@ -52,6 +51,8 @@ export class AuthService {
         }
       })
       
+      console.log("Usuario creado")
+      console.log(usuarioCreado)
       const token = jwt.sign(
         {
           id: usuarioCreado.id,
@@ -68,9 +69,10 @@ export class AuthService {
         token: token,
       }
     } else {
-      return "No se pudo crear cuenta, este correo ya se registro anteriormente";
+      return {message: "No se pudo crear cuenta, este correo ya se registro anteriormente"};
     }
     } catch (error) {
+      console.log("Aqui es error")
       console.log(error)
       if (error instanceof Prisma.Prisma.PrismaClientValidationError){return {
         message: "Error en la validacion de prisma",

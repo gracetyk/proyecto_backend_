@@ -20,7 +20,7 @@ export async function login(req, res) {
   } catch (error) {
     res.status(400).json({
       error: error.message,
-      message: "Error al hacer el login",
+      message: "Error al hacer el login, correo o contraseña incorrecta",
     });
   }
 }
@@ -29,13 +29,14 @@ export async function registro(req, res){
   try {
     
     const data = registroDto(req.body);
+    console.log(data)
 
     const result = await AuthService.crearUsuario(data);
     
     if (result.message){
-      return res.status(400).json(result);
+      return res.status(200).json(result);
     } else{
-      return res.status(201).json(result);
+      return res.status(400).json(result);
     }
 
   } catch (error) {
