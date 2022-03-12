@@ -15,3 +15,22 @@ export function loginDto({ correo, password }) {
 
   return { correo, password };
 }
+
+export function registroDto ({nombre, correo, password}){
+
+  if (validator.isEmpty(nombre)){
+    throw Error("Nombres y apellidos son necesarios")
+  }
+
+  if (!validator.isEmail(correo)) {
+    throw Error("El correo debe ser un correo valido");
+  }
+
+  if (!validator.isStrongPassword(password)) {
+    throw Error(
+      "La contraseña no es lo suficientemente segura, debe tener al menos una Mayus, una minus, un numero, un simbolo y una longitud minima de 8 caracteres"
+    );
+  }
+
+  return {nombre, correo, password}
+}
