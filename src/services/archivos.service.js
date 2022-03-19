@@ -1,5 +1,5 @@
-import { s3 } from "../s3.js";
-import {prisma} from '../prisma.js';
+//import { s3 } from "../s3.js";
+import { prisma } from '../prisma.js';
 
 export class ArchivosService {
   // data = { productoId: 1, contentType: 'image/png', ext:'png', filename: 'mayonesa.png' }
